@@ -57,9 +57,22 @@ Sub copy_paste()
 
 End Sub
 
+Sub highlight()
+    ' Remove all existing highlights from page
+    Worksheets("Copy").Cells.Interior.ColorIndex = 0
+    
+    ' Highlight the most recent entry for each subsector
+    Dim subsector As Range
+    
+    For Each subsector In Range("A:CD").Columns
+'        Worksheets("Copy").Cells(Rows.Count, subsector.column).End(xlUp).Offset(0, 1).Interior.ColorIndex = 1
+    Next subsector
+End Sub
+
 Sub all_subs()
     Call copy
     Call copy_paste
+    Call highlight
 End Sub
 
 
