@@ -19,8 +19,11 @@ Sub copy_paste()
         last_row = Worksheets("Sec Credit Data").Cells(Rows.Count, sec_credit_col.column).End(xlUp).Value
         
         'Save the vlue of column header in variable
-        col_header = Worksheets("Sec Credit Data").Cells(4, sec_credit_col.column).Value
-        Debug.Print col_header
+        If IsEmpty(Worksheets("Sec Credit Data").Cells(4, sec_credit_col.column)) = False Then
+            col_header = Worksheets("Sec Credit Data").Cells(4, sec_credit_col.column).Value
+'            Debug.Print col_header
+        Else
+        End If
 '        Debug.Print last_row
 
         'Paste value of last_row to corresponding column in Percentile Rankings sheet
@@ -40,7 +43,7 @@ Sub copy_paste()
 
             For Each perc_col In Worksheets("Copy").Range("A:CD").Columns
 
-                If Worksheets("Copy").Cells(5, perc_col.column).Value = col_header Then
+                If IsEmpty(Worksheets("Sec Credit Data").Cells(4, sec_credit_col.column)) = False And Worksheets("Copy").Cells(5, perc_col.column).Value = col_header Then
                     Worksheets("Copy").Cells(Rows.Count, perc_col.column).End(xlUp).Offset(0, 1).Value = last_row
                     Debug.Print (last_row)
                 Else
