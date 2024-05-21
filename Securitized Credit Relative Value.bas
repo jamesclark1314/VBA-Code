@@ -65,14 +65,44 @@ Sub highlight()
     Dim subsector As Range
     
     For Each subsector In Range("A:CD").Columns
-'        Worksheets("Copy").Cells(Rows.Count, subsector.column).End(xlUp).Offset(0, 1).Interior.ColorIndex = 1
+        If IsEmpty(Worksheets("Copy").Cells(5, subsector.column)) = False Then
+            Worksheets("Copy").Cells(Rows.Count, subsector.column).End(xlUp).Offset(0, 1).Interior.Color = RGB(255, 255, 0)
+            Worksheets("Copy").Cells(Rows.Count, subsector.column).End(xlUp).Offset(0, 0).Interior.Color = RGB(255, 255, 0)
+            
+            ' Center the spread
+            Worksheets("Copy").Cells(Rows.Count, subsector.column).End(xlUp).Offset(0, 1).HorizontalAlignment = xlCenter
+        Else
+        End If
+    Next subsector
+End Sub
+
+Sub sort()
+    Dim subsector As Range
+    
+    ' Sort each subsector by spread in ascending order
+    For Each subsector In Range("A:CD").Columns
+        If Worksheets("Copy").Cells(12, subsector.column) = "Date" Then
+            Worksheets("Copy").Cells(12, subsector.column).CurrentRegion.sort Key1:=Cells(12, subsector.column).Offset(0, 1), Order1:=xlAscending, Header:=xlYes
+        End If
+    Next subsector
+End Sub
+
+Sub rank1()
+    Dim subsector As Range
+    
+    ' Delete everything in the rank column then re-rank
+    For Each subsector In Range("A:CF").Columns
+        If Worksheets("Copy").Cells(12, subsector.column) = "Rank" Then
+            Worksheets("Copy").Range(Worksheets("Copy").Cells(12, subsector.column).Offset(1, 0), Worksheets("Copy").Cells(12, subsector.column).End(xlDown)).ClearContents
+        End If
     Next subsector
 End Sub
 
 Sub all_subs()
     Call copy
+    Call rank1
     Call copy_paste
     Call highlight
+    Call sort
 End Sub
-
 
