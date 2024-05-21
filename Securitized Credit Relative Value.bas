@@ -45,7 +45,7 @@ Sub copy_paste()
 
                 If IsEmpty(Worksheets("Sec Credit Data").Cells(4, sec_credit_col.column)) = False And Worksheets("Copy").Cells(5, perc_col.column).Value = col_header Then
                     Worksheets("Copy").Cells(Rows.Count, perc_col.column).End(xlUp).Offset(0, 1).Value = last_row
-                    Debug.Print (last_row)
+'                    Debug.Print (last_row)
                 Else
                 End If
 
@@ -98,11 +98,38 @@ Sub rank1()
     Next subsector
 End Sub
 
+Sub rank2()
+    Dim column As Range
+    Dim row As Range
+    Dim row_count As Long
+    Dim iteration As Long
+    
+    ' Fill in the rank column
+    iteration = 1
+    For Each column In Range("A:CF").Columns
+    
+            row_count = Worksheets("Copy").Cells(Rows.Count, iteration).End(xlUp).row
+            Debug.Print row_count
+            
+        If Worksheets("Copy").Cells(12, column.column).Offset(0, 1) = "Rank" Then
+            Worksheets("Copy").Cells(13, column.column).Offset(0, 1) = "1"
+            
+            For Each row In Range(Cells(14, column.column).Offset(0, 1), Cells(row_count, column.column).Offset(0, 1))
+                row.Value = Cells(row.row - 1, column.column).Offset(0, 1).Value + 1
+            Next row
+    
+        End If
+        iteration = iteration + 1
+        
+    Next column
+End Sub
+
 Sub all_subs()
     Call copy
     Call rank1
     Call copy_paste
     Call highlight
     Call sort
+    Call rank2
 End Sub
 
